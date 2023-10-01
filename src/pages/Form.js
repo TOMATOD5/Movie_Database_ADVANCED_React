@@ -14,6 +14,23 @@ const Form = () => {
 
     console.log(movieTitle, movieAge, movieTime)
 
+    const newMovie = {
+      title: movieTitle,
+      minage: parseInt(movieAge),
+      time: parseInt(movieTime)
+    }
+
+
+    try {
+      projectFirestore.collection("movies").add(newMovie)
+      setMovieTitle("")
+      setMovieAge("")
+      setMovieTime("")
+    } catch (err) {
+      console.log(err.message)
+    }
+
+
 
   }
 
@@ -24,6 +41,7 @@ const Form = () => {
         type="text"
         placeholder="Název filmu"
         onChange={ (e) => setMovieTitle(e.target.value) }
+        value={movieTitle}
       />
 
 
@@ -31,7 +49,8 @@ const Form = () => {
         type="number"
         placeholder="Minimální věk"
         min="1"
-        onChange={(e) => setMovieAge(e.target.value)}  
+        onChange={(e) => setMovieAge(e.target.value)}
+        value={movieAge} 
       />
 
 
@@ -40,6 +59,7 @@ const Form = () => {
         placeholder="Čas filmu"
         min="1"
         onChange={ (e) => setMovieTime(e.target.value) }
+        value={movieTime}
       />
 
 

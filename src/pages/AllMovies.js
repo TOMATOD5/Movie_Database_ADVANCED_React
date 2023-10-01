@@ -8,7 +8,8 @@ const AllMovies = () => {
 
 
   useEffect( () => {
-    projectFirestore.collection("movies").get().then( (snapshot) => {
+      const unsubscribe =
+    projectFirestore.collection("movies").onSnapshot( (snapshot) => {
       // console.log(snapshot.docs)
 
 
@@ -22,23 +23,29 @@ const AllMovies = () => {
         } )
         setData(result)
       }
-    }).catch( (err) => {
-      setError(err.message)
-    } )
+    }, (err) => setError(err.message))
 
+
+    return () => unsubscribe()
 
   }, [])
+
+  const deleteMovie = (id) => {
+    projectFirestore.collection("movies").doc(id).delete()
+  }
+
 
 
   return <section>
   {error && <p>{error}</p>}
   {data.map( (oneMovie) => {
-    const {id, title, minage, time} = oneMovie
+    const {id, title} = oneMovie
 
 
     return <div key={id} >
       <p>{title}</p>
       <Link to={`/one-movie/${id}`}>Více informací</Link>
+      <button type="button" onClick={ () => deleteMovie(id) }>Smazat</button>
     </div>
   } )}
 </section>
