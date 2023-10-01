@@ -1,6 +1,9 @@
-import { useParams } from "react-router-dom"
+import "./OneMovie.css"
+import { useParams, Link } from "react-router-dom"
 import { projectFirestore } from "../firebase/config"
 import { useState, useEffect } from "react"
+
+
 
 const OneMovie = () => {
   const [data, setData] = useState({})
@@ -26,11 +29,12 @@ const OneMovie = () => {
   }, [movieId])
 
 
-  return <section>
+  return <section className="one-movie-section">
     {error && <p>{error}</p>}
     <h1>{data.title}</h1>
     <p>{data.minage}+</p>
     <p>{data.time} minut</p>
+    <Link exact to="/all-movies">Zpět na seznam filmů</Link>
   </section>
 }
 
